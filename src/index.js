@@ -10,7 +10,7 @@ mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
     server.listen(port, () => {
-      console.log("server is listening to port: " + port);
+      console.log("server is listening to port 🚀: " + port);
     });
   })
   .catch(() => {
