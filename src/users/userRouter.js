@@ -5,7 +5,7 @@ import upload from "../multer/multer.js"
 const userRouter = express.Router()
 
 userRouter
-    .get("/test", async (req, res) => {
+    .get("/", async (req, res) => {
         const users = await User.find({})
         res.json(users)
     })
@@ -27,9 +27,9 @@ userRouter
     .patch("/:id/avatar", upload.single("avatar"), async (req, res, next) => {
         try {
             const { id } = req.params
-            const user = await User.findById(id)
-            user.avatar = req.file.path
-            const updatedUser = await user.save()
+            const updatedUser = await User.findByIdAndUpdate(id, {
+                image: req.file.path,
+            })
             res.json(updatedUser)
         } catch (error) {
             next(error)
@@ -37,11 +37,10 @@ userRouter
     })
 
     .post("/", async (req, res) => {
-        const newUser = new User(req.body) //we can also use create to create and save the new user
+        /* WORKING */
+        const newUser = User.create(req.body)
 
-        await newUser.save()
-
-        res.status(201).send(newUser)
+        res.status(201).json(newUser)
     })
 
     .delete("/:id", async (req, res, next) => {
