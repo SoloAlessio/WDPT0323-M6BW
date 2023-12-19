@@ -1,29 +1,38 @@
-import mongoose, { Schema, model } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const UserSchema = new Schema({
-    role: {
+    name: {
         type: String,
         required: true,
     },
-    company: {
-        type: Number,
-        required: true,
-    },
-    startDate: {
+    surname: {
         type: String,
         required: true,
     },
-    endDate: {
+    password: {
         type: String,
         required: true,
     },
-    description: {
+    email: {
         type: String,
         required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    bio: {
+        type: String,
     },
     area: {
         type: String,
-        required: true,
+    },
+    image: {
+        type: String,
     },
 })
 
