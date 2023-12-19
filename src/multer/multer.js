@@ -1,16 +1,14 @@
 import multer from "multer"
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import { v2 as cloudinary } from "cloudinary"
 
-const storage = multer.diskStorage({
-    destination: "./src/uploads/",
-    filename: function (req, file, callback) {
-        if (["image/jpeg", "image/png"].includes(file.mimetype)) {
-            callback(null, `${Date.now()}_${file.originalname}`)
-        } else {
-            const error = new Error("Please upload png or jpg")
-            error.statusCode = 400
-            callback(error)
-        }
+const cloudinaryStorage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: process.env.CLOUDINARY_URL,
     },
 })
-const upload = multer({ storage })
+
+const upload = multer({ storage: cloudinaryStorage })
+
 export default upload
