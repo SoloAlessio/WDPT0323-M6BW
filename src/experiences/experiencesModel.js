@@ -1,25 +1,7 @@
-<<<<<<< Updated upstream
-import mongoose, { Schema } from "mongoose";
-
-const UserSchema = new Schema({
-  name: {
-    type: String,
-  },
-  age: {
-    type: Number,
-  },
-  email: {
-    type: String,
-  },
-  adress: {
-    type: String,
-  },
-});
-=======
 import mongoose from "mongoose"
 import { Schema } from "mongoose"
 
-const UserSchema = new Schema({
+const ExperienceSchema = new Schema({
     role: {
         type: String,
         required: true,
@@ -46,5 +28,4 @@ const UserSchema = new Schema({
     },
 })
 
-export const User = mongoose.model("users", UserSchema)
->>>>>>> Stashed changes
+export const Experience = mongoose.model("experiences", ExperienceSchema)
