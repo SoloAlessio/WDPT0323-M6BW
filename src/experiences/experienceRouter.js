@@ -1,15 +1,12 @@
-import express from "express"
+/* import express from "express"
 import { Experience } from "./experiencesModel.js"
+import upload from "../multer/multer.js"
+import bcrypt from "bcrypt"
+import authControl from "../middleware/authControl.js"
 
 const experienceRouter = express.Router()
 
 experienceRouter
-    .get("/test", async (req, res) => {
-        const experience = await Experience.findById("...")
-        res.json(experience)
-    })
-    .post("/test", async (req, res) => {
-        res.json({ message: "POST working" })
-    })
-
+    
 export default experienceRouter
+ */

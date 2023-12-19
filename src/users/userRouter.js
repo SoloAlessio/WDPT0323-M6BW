@@ -1,5 +1,6 @@
 import express from "express"
 import { User } from "./usersModel.js"
+import { Experience } from "../experiences/experiencesModel.js"
 import upload from "../multer/multer.js"
 import bcrypt from "bcrypt"
 import authControl from "../middleware/authControl.js"
@@ -71,5 +72,91 @@ userRouter
             next(error)
         }
     })
+
+ /*    //ESPERIENZE
+
+    .get("/:id/experiences", async (req, res, next) => {
+        try {
+            let experiences = await Experience.find({
+                blog: req.params.id,
+            }).populate({
+                model: "User",
+                select: ["name", "surname", "email"],
+            })
+            res.send(experiences)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .get("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            let experiences = await Experience.find({
+                _id: req.params.experienceId,
+            }).populate({
+                model: "User",
+                select: ["name", "surname", "email"],
+            })
+            res.send(experiences)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .put("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            let experience = await Experience.findOneAndUpdate(
+                {
+                    _id: req.params.experienceId,
+                },
+                req.body,
+                { new: true }
+            ).populate({
+                model: "User",
+                select: ["name", "surname", "email"],
+            })
+            res.send(experience)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .delete("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            await Experience.findOneAndDelete({
+                _id: req.params.experienceId,
+            })
+            res.send(204)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .post("/:id", async (req, res, next) => {
+        try {
+            let newExperience = await Experience.create({
+                ...req.body,
+                user: req.params.id,
+            })
+            console.log(newExperience)
+            let profileData = await User.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $push: {
+                        experience: newExperience,
+                    },
+                },
+                { new: true }
+            ).populate({
+                populate: {
+                    model: "User",
+                    select: ["name", "surname", "email"],
+                },
+            })
+            res.send(profileData)
+        } catch (error) {
+            next(error)
+        }
+    }) */
 
 export default userRouter
