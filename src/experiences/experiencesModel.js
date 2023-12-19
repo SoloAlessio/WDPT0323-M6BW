@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const ExperienceSchema = new Schema({
     role: {
@@ -25,8 +25,6 @@ const ExperienceSchema = new Schema({
         type: String,
         required: true,
     },
-
 })
 
-export const Experience = mongoose.model("experiences", ExperienceSchema);
-
+export const Experience = mongoose.model("experiences", ExperienceSchema)
