@@ -15,11 +15,12 @@ userRouter
 
     .get("/me", authControl, async (req, res, next) => {
         /* WORKING */
+        console.log(req.user)
         try {
-            const user = await User.findById(req.params.id)
+            const user = await User.findById(req.user._id)
 
             if (!user) {
-                return res.status(404).send()
+                return res.status(404).send({ message: "User not found" })
             }
 
             res.json(user)
@@ -46,7 +47,7 @@ userRouter
         }
     )
 
-    .post("/", authControl, async (req, res) => {
+    .post("/", async (req, res) => {
         /* WORKING */
         const password = await bcrypt.hash(req.body.password, 10)
         const newUser = await User.create({
