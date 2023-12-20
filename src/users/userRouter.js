@@ -14,16 +14,15 @@ userRouter
         res.json(users)
     })
 
-    .get("/me", authControl, async (req, res, next) => {
+    .get("/:id", authControl, async (req, res, next) => {
         /* WORKING */
         try {
-            const user = await User.findById(req.params.id)
-
+            /*             const user = await User.findById(req.params.id)
             if (!user) {
                 return res.status(404).send()
             }
-
-            res.json(user)
+            res.json(user) */
+            res.status(200).json(req.user)
         } catch (err) {
             next(err)
         }
@@ -73,7 +72,7 @@ userRouter
         }
     })
 
- /*    //ESPERIENZE
+/*    //ESPERIENZE
 
     .get("/:id/experiences", async (req, res, next) => {
         try {
