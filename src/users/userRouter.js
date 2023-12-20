@@ -4,16 +4,24 @@ import upload from "../multer/multer.js"
 import bcrypt from "bcrypt"
 import authControl from "../middleware/authControl.js"
 import { Experience } from "../experiences/experiencesModel.js"
+import passport from 'passport';
+
 
 const userRouter = express.Router()
 
 userRouter
-    .get("/", authControl, async (req, res) => {
-        /* WORKING */
-        const users = await User.find({})
-        res.json(users)
+    .get("/", authControl, async (req, res, next) => {
+        try {
+            const users = await User.find().populate({
+                path: "experiences",
+                model: "Experience",
+            })
+            res.json(users)
+        } catch (error) {
+            res.status(500).send(error)
+            next(error)
+        }
     })
-
     .get("/:id", authControl, async (req, res, next) => {
         /* WORKING */
         try {
@@ -72,14 +80,14 @@ userRouter
         }
     })
 
-//ESPERIENZE
+    //EXPERIENCE
 
     .get("/:id/experiences", async (req, res, next) => {
-    //WORKING
+        //WORKING
         try {
             let experiences = await Experience.find({
                 blog: req.params.id,
-            }).populate("email", ) 
+            }).populate("email")
             res.send(experiences)
         } catch (error) {
             next(error)
@@ -154,6 +162,37 @@ userRouter
         } catch (error) {
             next(error)
         }
-    }) 
+    })
+
+    //OAUTH 2 routes
+
+    .get(
+        "/oauth-google",
+        passport.authenticate("google", {
+            scope: ["profile", "email"],
+            prompt: "select_account",
+        })
+    )
+
+    .get(
+        "/oauth-callback",
+        passport.authenticate("google", {
+            failureRedirect: "/",
+            session: false,
+        }),
+        async (req, res) => {
+            const payload = { id: req.user._id }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: "1h",
+            })
+            res.redirect(
+                `http://localhost:3000?token=${token}&userId=${req.user._id}`
+            )
+        }
+    )
+
+// Logout
+//  .delete("/session", async (req, res) => {})
 
 export default userRouter

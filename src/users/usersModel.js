@@ -34,13 +34,10 @@ const UserSchema = new Schema({
     image: {
         type: String,
     },
-    experiences: {
-        "text": String,
-        "users": {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-          },
-        },
+    experiences: [{
+        type: Schema.Types.ObjectId,
+        ref: "Experience"
+    }]
 })
 
 export const User = mongoose.model("users", UserSchema)

@@ -9,7 +9,7 @@ const ExperienceSchema = new Schema({
         type: String,
     },
     company: {
-        type: Number,
+        type: String,
     },
     startDate: {
         type: String,
