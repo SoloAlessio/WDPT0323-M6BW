@@ -1,9 +1,9 @@
 import express from "express"
 import { User } from "./usersModel.js"
-import { Experience } from "../experiences/experiencesModel.js"
 import upload from "../multer/multer.js"
 import bcrypt from "bcrypt"
 import authControl from "../middleware/authControl.js"
+import { Experience } from "../experiences/experiencesModel.js"
 
 const userRouter = express.Router()
 
@@ -46,7 +46,7 @@ userRouter
         }
     )
 
-    .post("/", authControl, async (req, res) => {
+    .post("/", async (req, res) => {
         /* WORKING */
         const password = await bcrypt.hash(req.body.password, 10)
         const newUser = await User.create({
@@ -72,16 +72,14 @@ userRouter
         }
     })
 
-/*    //ESPERIENZE
+//ESPERIENZE
 
     .get("/:id/experiences", async (req, res, next) => {
+    //WORKING
         try {
             let experiences = await Experience.find({
                 blog: req.params.id,
-            }).populate({
-                model: "User",
-                select: ["name", "surname", "email"],
-            })
+            }).populate("email", ) 
             res.send(experiences)
         } catch (error) {
             next(error)
@@ -156,6 +154,6 @@ userRouter
         } catch (error) {
             next(error)
         }
-    }) */
+    }) 
 
 export default userRouter

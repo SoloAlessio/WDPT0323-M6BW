@@ -7,19 +7,15 @@ const ExperienceSchema = new Schema({
       },
     role: {
         type: String,
-        required: true,
     },
     company: {
         type: Number,
-        required: true,
     },
     startDate: {
         type: String,
-        required: true,
     },
     endDate: {
         type: String,
-        required: true,
     },
     description: {
         type: String,
@@ -27,7 +23,6 @@ const ExperienceSchema = new Schema({
     },
     area: {
         type: String,
-        required: true,
     },
 })
 
