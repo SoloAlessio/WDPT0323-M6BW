@@ -4,7 +4,7 @@ const ExperienceSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
-      },
+    },
     role: {
         type: String,
     },
@@ -27,5 +27,3 @@ const ExperienceSchema = new Schema({
 })
 
 export const Experience = mongoose.model("experiences", ExperienceSchema)
-
-
