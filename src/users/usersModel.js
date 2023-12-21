@@ -34,6 +34,10 @@ const UserSchema = new Schema({
     image: {
         type: String,
     },
+    experiences: [{
+        type: Schema.Types.ObjectId,
+        ref: "Experience"
+    }]
 })
 
 export const User = mongoose.model("users", UserSchema)

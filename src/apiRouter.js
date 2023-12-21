@@ -1,7 +1,6 @@
 import express from "express"
 const apiRouter = express.Router()
 import userRouter from "./users/userRouter.js"
-import experienceRouter from "./experiences/experienceRouter.js"
 import loginRouter from "./login.js"
 
 apiRouter.get("/test", (req, res) => {
@@ -15,7 +14,6 @@ apiRouter.post("/body", (req, res) => {
 })
 
 apiRouter.use("/profile", userRouter)
-apiRouter.use("/experiences", experienceRouter)
 apiRouter.use("/login", loginRouter)
 
 export default apiRouter

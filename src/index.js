@@ -2,12 +2,16 @@ import express from "express"
 import apiRouter from "./apiRouter.js"
 import mongoose from "mongoose"
 import cors from "cors"
+import passport from "passport"
+import googleStrategy from "./middleware/google.js"
 
 const port = 3030
 const server = express()
 server.use(express.json())
 server.use(cors())
 server.use("/api", apiRouter)
+passport.use(googleStrategy)
+
 
 mongoose
     .connect(process.env.MONGO_URL)

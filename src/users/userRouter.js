@@ -3,27 +3,34 @@ import { User } from "./usersModel.js"
 import upload from "../multer/multer.js"
 import bcrypt from "bcrypt"
 import authControl from "../middleware/authControl.js"
+import { Experience } from "../experiences/experiencesModel.js"
+import passport from "passport"
 
 const userRouter = express.Router()
 
 userRouter
-    .get("/", authControl, async (req, res) => {
-        /* WORKING */
-        const users = await User.find({})
-        res.json(users)
+    .get("/", authControl, async (req, res, next) => {
+        try {
+            const users = await User.find().populate({
+                path: "experiences",
+                model: "Experience",
+            })
+            res.json(users)
+        } catch (error) {
+            res.status(500).send(error)
+            next(error)
+        }
     })
-
-    .get("/me", authControl, async (req, res, next) => {
+    .get("/:id", authControl, async (req, res, next) => {
         /* WORKING */
         console.log(req.user)
         try {
-            const user = await User.findById(req.user._id)
-
+            /*             const user = await User.findById(req.params.id)
             if (!user) {
                 return res.status(404).send({ message: "User not found" })
             }
-
-            res.json(user)
+            res.json(user) */
+            res.status(200).json(req.user)
         } catch (err) {
             next(err)
         }
@@ -72,5 +79,120 @@ userRouter
             next(error)
         }
     })
+
+    //EXPERIENCE
+
+    .get("/:id/experiences", async (req, res, next) => {
+        //WORKING
+        try {
+            let experiences = await Experience.find({
+                blog: req.params.id,
+            }).populate("email")
+            res.send(experiences)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .get("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            let experiences = await Experience.find({
+                _id: req.params.experienceId,
+            }).populate({
+                model: "User",
+                select: ["name", "surname", "email"],
+            })
+            res.send(experiences)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .put("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            let experience = await Experience.findOneAndUpdate(
+                {
+                    _id: req.params.experienceId,
+                },
+                req.body,
+                { new: true }
+            ).populate({
+                model: "User",
+                select: ["name", "surname", "email"],
+            })
+            res.send(experience)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .delete("/:id/experiences/:experienceId", async (req, res, next) => {
+        try {
+            await Experience.findOneAndDelete({
+                _id: req.params.experienceId,
+            })
+            res.send(204)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .post("/:id", async (req, res, next) => {
+        try {
+            let newExperience = await Experience.create({
+                ...req.body,
+                user: req.params.id,
+            })
+            console.log(newExperience)
+            let profileData = await User.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $push: {
+                        experience: newExperience,
+                    },
+                },
+                { new: true }
+            ).populate({
+                populate: {
+                    model: "User",
+                    select: ["name", "surname", "email"],
+                },
+            })
+            res.send(profileData)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    //OAUTH 2 routes
+
+    .get(
+        "/oauth-google",
+        passport.authenticate("google", {
+            scope: ["profile", "email"],
+            prompt: "select_account",
+        })
+    )
+
+    .get(
+        "/oauth-callback",
+        passport.authenticate("google", {
+            failureRedirect: "/",
+            session: false,
+        }),
+        async (req, res) => {
+            const payload = { id: req.user._id }
+
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {
+                expiresIn: "1h",
+            })
+            res.redirect(
+                `http://localhost:3000?token=${token}&userId=${req.user._id}`
+            )
+        }
+    )
+
+// Logout
+//  .delete("/session", async (req, res) => {})
 
 export default userRouter
