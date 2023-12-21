@@ -4,18 +4,15 @@ import upload from "../multer/multer.js"
 import bcrypt from "bcrypt"
 import authControl from "../middleware/authControl.js"
 import { Experience } from "../experiences/experiencesModel.js"
-import passport from 'passport';
-
+import passport from "passport"
 
 const userRouter = express.Router()
 
 userRouter
     .get("/", authControl, async (req, res, next) => {
+        /* WORKING */
         try {
-            const users = await User.find().populate({
-                path: "experiences",
-                model: "Experience",
-            })
+            const users = await User.find()
             res.json(users)
         } catch (error) {
             res.status(500).send(error)
@@ -47,7 +44,8 @@ userRouter
                 const updatedUser = await User.findByIdAndUpdate(id, {
                     image: req.file.path,
                 })
-                res.send(updatedUser)
+                res.json(updatedUser)
+                console.log(req.file.path)
             } catch (error) {
                 next(error)
             }
