@@ -34,10 +34,12 @@ const UserSchema = new Schema({
     image: {
         type: String,
     },
-    experiences: [{
-        type: Schema.Types.ObjectId,
-        ref: "Experience"
-    }]
+    experiences: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "experiences",
+        },
+    ],
 })
 
 export const User = mongoose.model("users", UserSchema)
