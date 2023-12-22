@@ -19,7 +19,7 @@ Le immagini dovranno essere caricate tramite multer
 [ x ] GET /me/experiences + ritorna le esperienze dellutente loggato
 [ x ] POST /experiences + crea una nuova esperienza per l'utente loggato
 [ - ] PUT hexpld caricamento immagine per esperienza
-[ - ] PUT,
-[ - ] DELETE /:expld modifica o elimina le esperienze EXTRA
+[ x ] PUT,
+[ x ] DELETE /:expld modifica o elimina le esperienze EXTRA
 
 Le immagini andranno caricate tramite multer

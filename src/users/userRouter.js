@@ -111,7 +111,7 @@ userRouter
                 expiresIn: "1h",
             })
             res.redirect(
-                `http://localhost:3000?token=${token}&userId=${req.user._id}`
+                `http://localhost:3030?token=${token}&userId=${req.user._id}`
             )
         }
     )

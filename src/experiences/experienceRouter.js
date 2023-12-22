@@ -37,10 +37,7 @@ experienceRouter
                 },
                 req.body,
                 { new: true }
-            ).populate({
-                model: "User",
-                select: ["name", "surname", "email"],
-            })
+            )
             res.send(experience)
         } catch (error) {
             next(error)
