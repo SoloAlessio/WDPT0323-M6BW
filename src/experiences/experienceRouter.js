@@ -2,6 +2,7 @@ import express from "express"
 import { User } from "../users/usersModel.js"
 import { Experience } from "../experiences/experiencesModel.js"
 import authControl from "../middleware/authControl.js"
+import upload from "../multer/multer.js"
 
 const experienceRouter = express.Router()
 
@@ -13,6 +14,17 @@ experienceRouter
                 user: req.params.id,
             })
             res.send(experiences)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    .get("/me/experiences", authControl, async (req, res, next) => {
+        try {
+            const experiences = await Experience.find({ user: req.user._id })
+            console.log(experiences)
+
+            res.status(200).json(experiences)
         } catch (error) {
             next(error)
         }
@@ -37,10 +49,7 @@ experienceRouter
                 },
                 req.body,
                 { new: true }
-            ).populate({
-                model: "User",
-                select: ["name", "surname", "email"],
-            })
+            ).populate("user")
             res.send(experience)
         } catch (error) {
             next(error)
@@ -82,5 +91,26 @@ experienceRouter
             next(error)
         }
     })
+
+    .patch(
+        "/experience/:expId/cover",
+        authControl,
+        upload.single("photo"),
+        async (req, res, next) => {
+            /* WORKING */
+            const { expId } = req.params
+            try {
+                const updatedExperience = await Experience.findByIdAndUpdate(
+                    expId,
+                    {
+                        photo: req.file.path,
+                    }
+                )
+                res.send(updatedExperience)
+            } catch (error) {
+                next(error)
+            }
+        }
+    )
 
 export default experienceRouter
