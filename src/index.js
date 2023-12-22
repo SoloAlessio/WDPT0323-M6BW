@@ -5,13 +5,12 @@ import cors from "cors"
 import passport from "passport"
 import googleStrategy from "./middleware/google.js"
 
-const port = 3030
+const port = process.env.PORT || 3030
 const server = express()
 server.use(express.json())
 server.use(cors())
 server.use("/api", apiRouter)
 passport.use(googleStrategy)
-
 
 mongoose
     .connect(process.env.MONGO_URL)
