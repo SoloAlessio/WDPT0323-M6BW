@@ -1,12 +1,12 @@
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { User} from "../users/usersModel.js";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20"
+import { User } from "../users/usersModel.js"
 
 const googleStrategy = new GoogleStrategy(
     {
         clientID:
-            "59927620494-d0rf8vq0akhc423iphambmbir7nevuhi.apps.googleusercontent.com", 
+            "59927620494-d0rf8vq0akhc423iphambmbir7nevuhi.apps.googleusercontent.com",
         clientSecret: "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",
-        callbackURL: "http://localhost:3030/profile/oauth-callback",
+        callbackURL: "http://localhost:3030/api/profile/oauth-callback",
     },
     async function (_, __, profile, cb) {
         console.log(profile)
