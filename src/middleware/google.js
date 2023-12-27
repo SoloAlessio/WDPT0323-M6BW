@@ -3,10 +3,9 @@ import { User } from "../users/usersModel.js"
 
 const googleStrategy = new GoogleStrategy(
     {
-        clientID:
-            "59927620494-d0rf8vq0akhc423iphambmbir7nevuhi.apps.googleusercontent.com",
-        clientSecret: "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",
-        callbackURL: "http://localhost:3030/api/profile/oauth-callback",
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_URL,
     },
     async function (_, __, profile, cb) {
         console.log(profile)
